@@ -1,0 +1,3 @@
+include ':app', ':OpenALPR'
+
+project(':OpenALPR').projectDir = new File('../../app')
