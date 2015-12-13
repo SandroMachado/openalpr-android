@@ -1,0 +1,35 @@
+# Built application files
+*.apk
+*.ap_
+
+# Files for the Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+
+# Gradle files
+.gradle/
+build/
+/*/build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log Files
+*.log
+
+# Android Studio / IntelliJ IDEA
+*.iws
+.idea/libraries
+.idea/tasks.xml
+.idea/vcs.xml
+.idea/workspace.xml
+Sample/OpenALPRSample/.idea/libraries
+Sample/OpenALPRSample/.idea/tasks.xml
+Sample/OpenALPRSample/.idea/vcs.xml
+Sample/OpenALPRSample/.idea/workspace.xml
