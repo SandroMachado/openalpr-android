@@ -22,10 +22,7 @@ Them include the openalpr-android dependency:
 dependencies {
 
     // ... other dependencies here.    	
-    compile('com.github.SandroMachado:openalpr-android:1.0.0@aar') {
-        transitive = true
-    }
-}
+    compile 'com.github.SandroMachado:openalpr-android:1.0.0'
 ```
 
 # Usage
