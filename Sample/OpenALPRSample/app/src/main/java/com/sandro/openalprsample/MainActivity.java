@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE = 100;
     static final String ANDROID_DATA_DIR = "/data/data/com.sandro.openalprsample";
 
-
     private File destination;
     private TextView resultTextView;
     private ImageView imageView;
