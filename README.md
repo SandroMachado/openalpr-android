@@ -23,6 +23,7 @@ dependencies {
 
     // ... other dependencies here.    	
     compile 'com.github.SandroMachado:openalpr-android:1.0.0'
+}
 ```
 
 # Usage
