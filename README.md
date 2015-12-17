@@ -1,4 +1,4 @@
-# openalpr-android
+# openalpr-android [![Release](https://img.shields.io/github/release/SandroMachado/openalpr-android.svg?label=jitpack)](https://jitpack.io/#SandroMachado/openalpr-android)
 
 OpenALPR is an open source Automatic License Plate Recognition library written in C++ with bindings in C#, Java, Node.js, and Python. This project ports this library to Android.
 
