@@ -1,8 +1,12 @@
+# Gradle files
+.gradle/
+build/
+
+# Log Files
+*.log
+
+# Android Studio / IntelliJ IDEA
+*.iws
+.idea/
 *.iml
-.gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
-.DS_Store
-/build
-/captures
+local.properties
