@@ -101,9 +101,16 @@ public class MainActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    if (results == null || results.getResults().size() == 0) {
+                                        Toast.makeText(MainActivity.this, "It was not possible to detect the licence plate.", Toast.LENGTH_LONG).show();
+
+                                        return;
+                                    }
+
                                     resultTextView.setText("Plate: " + results.getResults().get(0).getPlate() + " Confidence: " + results.getResults().get(0).getConfidence().toString() + " Processing time: " + results.getResults().get(0).getProcessing_time_ms().toString());
                                 }
                             });
+
                         } catch (JsonSyntaxException exception) {
                             final ResultsError resultsError = new Gson().fromJson(result, ResultsError.class);
 
