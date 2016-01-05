@@ -20,7 +20,8 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:freezesText="true"/>
+        android:freezesText="true"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/button"
