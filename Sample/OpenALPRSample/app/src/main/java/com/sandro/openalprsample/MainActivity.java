@@ -16,7 +16,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,33 +51,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String name = dateToString(new Date(), "yyyy-MM-dd-hh-mm-ss");
         ANDROID_DATA_DIR = this.getApplicationInfo().dataDir;
-        destination = new File(Environment.getExternalStorageDirectory(), name + ".jpg");
 
-        Button click = (Button) findViewById(R.id.button);
-        resultTextView = (TextView) findViewById(R.id.textView);
-        imageView = (ImageView) findViewById(R.id.imageView);
-
-        click.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 checkPermission();
             }
         });
+        resultTextView = (TextView) findViewById(R.id.textView);
+        imageView = (ImageView) findViewById(R.id.imageView);
+
+        resultTextView.setText("Press the button below to start a request.");
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE && resultCode == Activity.RESULT_OK) {
             final ProgressDialog progress = ProgressDialog.show(this, "Loading", "Parsing result...", true);
-
             final String openAlprConfFile = ANDROID_DATA_DIR + File.separatorChar + "runtime_data" + File.separatorChar + "openalpr.conf";
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 10;
 
             // Picasso requires permission.WRITE_EXTERNAL_STORAGE
             Picasso.with(MainActivity.this).load(destination).fit().centerCrop().into(imageView);
+            resultTextView.setText("Processing");
 
             AsyncTask.execute(new Runnable() {
                 @Override
@@ -89,21 +86,19 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         final Results results = new Gson().fromJson(result, Results.class);
-
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 if (results == null || results.getResults().size() == 0) {
                                     Toast.makeText(MainActivity.this, "It was not possible to detect the licence plate.", Toast.LENGTH_LONG).show();
                                     resultTextView.setText("It was not possible to detect the licence plate.");
-                                    return;
+                                } else {
+                                    resultTextView.setText("Plate: " + results.getResults().get(0).getPlate()
+                                            // Trim confidence to two decimal places
+                                            + " Confidence: " + String.format("%.2f", results.getResults().get(0).getConfidence()) + "%"
+                                            // Convert processing time to seconds and trim to two decimal places
+                                            + " Processing time: " + String.format("%.2f", ((results.getResults().get(0).getProcessing_time_ms() / 1000) % 60)) + " seconds");
                                 }
-
-                                resultTextView.setText("Plate: " + results.getResults().get(0).getPlate()
-                                        // Trim confidence to two decimal places
-                                        + " Confidence: " + String.format("%.2f", results.getResults().get(0).getConfidence()) + "%"
-                                        // Convert processing time to seconds and trim to two decimal places
-                                        + " Processing time: " + String.format("%.2f", ((results.getResults().get(0).getProcessing_time_ms() / 1000) % 60)) + " seconds");
                             }
                         });
 
@@ -168,6 +163,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void takePicture() {
+        String name = dateToString(new Date(), "yyyy-MM-dd-hh-mm-ss");
+        destination = new File(Environment.getExternalStorageDirectory(), name + ".jpg");
+
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(destination));
         startActivityForResult(intent, REQUEST_IMAGE);

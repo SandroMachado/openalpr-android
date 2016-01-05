@@ -21,7 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:freezesText="true"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:gravity="center_horizontal" />
 
     <Button
         android:id="@+id/button"
