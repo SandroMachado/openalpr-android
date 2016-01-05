@@ -59,7 +59,7 @@ String result = OpenALPR.Factory.create(MainActivity.this, ANDROID_DATA_DIR).rec
  *
  * @return - JSON string of results
  */
- 
+
 public String recognizeWithCountryRegionNConfig(String country, String region, String configFilePath, String imgFilePath, int topN);
 
 ```
@@ -71,7 +71,5 @@ The repository also includes a [sample application](./Sample/OpenALPRSample) tha
 
 # Credits
 
- - [https://github.com/openalpr/openalpr](https://github.com/openalpr/openalpr) (the project repository)
- - [https://github.com/sujaybhowmick/OpenAlprDroidApp](https://github.com/sujaybhowmick/OpenAlprDroidApp) (for the compiled sources and for the sample that helped me to port the project to an android library)
-
-
+ - [OpenALPR](https://github.com/openalpr/openalpr) Parent Project
+ - [OpenAlprDroidApp](https://github.com/sujaybhowmick/OpenAlprDroidApp) for the compiled sources and sample that helped port the project to an android library
