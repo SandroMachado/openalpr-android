@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                                             // Trim confidence to two decimal places
                                             + " Confidence: " + String.format("%.2f", results.getResults().get(0).getConfidence()) + "%"
                                             // Convert processing time to seconds and trim to two decimal places
-                                            + " Processing time: " + String.format("%.2f", ((results.getResults().get(0).getProcessing_time_ms() / 1000) % 60)) + " seconds");
+                                            + " Processing time: " + String.format("%.2f", ((results.getProcessing_time_ms() / 1000.0) % 60)) + " seconds");
                                 }
                             }
                         });
