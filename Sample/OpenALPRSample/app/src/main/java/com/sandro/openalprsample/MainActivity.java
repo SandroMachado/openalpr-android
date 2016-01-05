@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (results == null || results.getResults().size() == 0) {
+                                if (results == null || results.getResults() == null || results.getResults().size() == 0) {
                                     Toast.makeText(MainActivity.this, "It was not possible to detect the licence plate.", Toast.LENGTH_LONG).show();
                                     resultTextView.setText("It was not possible to detect the licence plate.");
                                 } else {
