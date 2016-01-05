@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE = 100;
     final int STORAGE=1;
     private String ANDROID_DATA_DIR;
-    private File destination;
+    private static File destination;
     private TextView resultTextView;
     private ImageView imageView;
 
@@ -171,4 +171,9 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_IMAGE);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Picasso.with(MainActivity.this).load(destination).fit().centerCrop().into(imageView);
+    }
 }
