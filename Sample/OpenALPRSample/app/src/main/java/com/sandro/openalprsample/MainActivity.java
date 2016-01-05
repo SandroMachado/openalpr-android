@@ -30,31 +30,30 @@ import org.openalpr.model.Results;
 import org.openalpr.model.ResultsError;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE = 100;
-    static final String ANDROID_DATA_DIR = "/data/data/com.sandro.openalprsample";
-
+    final int STORAGE=1;
+    private String ANDROID_DATA_DIR;
     private File destination;
     private TextView resultTextView;
     private ImageView imageView;
 
-    final int STORAGE=1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         String name = dateToString(new Date(), "yyyy-MM-dd-hh-mm-ss");
-
+        ANDROID_DATA_DIR = this.getApplicationInfo().dataDir;
         destination = new File(Environment.getExternalStorageDirectory(), name + ".jpg");
 
         Button click = (Button) findViewById(R.id.button);
@@ -62,13 +61,9 @@ public class MainActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.imageView);
 
         click.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(destination));
-                startActivityForResult(intent, REQUEST_IMAGE);
+                checkPermission();
             }
         });
     }
@@ -76,79 +71,70 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE && resultCode == Activity.RESULT_OK) {
+            final ProgressDialog progress = ProgressDialog.show(this, "Loading", "Parsing result...", true);
 
-            try {
-                final ProgressDialog progress = ProgressDialog.show(this, "Loading", "Parsing result...", true);
+            final String openAlprConfFile = ANDROID_DATA_DIR + File.separatorChar + "runtime_data" + File.separatorChar + "openalpr.conf";
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 10;
 
-                final String openAlprConfFile = ANDROID_DATA_DIR + File.separatorChar + "runtime_data" + File.separatorChar + "openalpr.conf";
-                checkPermission();
-                FileInputStream in = new FileInputStream(destination);
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 10;
+            // Picasso requires permission.WRITE_EXTERNAL_STORAGE
+            Picasso.with(MainActivity.this).load(destination).fit().centerCrop().into(imageView);
 
-                Picasso.with(MainActivity.this).load(destination).fit().centerCrop().into(imageView);
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    String result = OpenALPR.Factory.create(MainActivity.this, ANDROID_DATA_DIR).recognizeWithCountryRegionNConfig("us", "", destination.getAbsolutePath(), openAlprConfFile, 10);
 
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        String result = OpenALPR.Factory.create(MainActivity.this, ANDROID_DATA_DIR).recognizeWithCountryRegionNConfig("us", "", destination.getAbsolutePath(), openAlprConfFile, 10);
+                    Log.d("OPEN ALPR", result);
 
-                        Log.d("OPEN ALPR", result);
+                    try {
+                        final Results results = new Gson().fromJson(result, Results.class);
 
-                        try {
-                            final Results results = new Gson().fromJson(result, Results.class);
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (results == null || results.getResults().size() == 0) {
-                                        Toast.makeText(MainActivity.this, "It was not possible to detect the licence plate.", Toast.LENGTH_LONG).show();
-
-                                        return;
-                                    }
-
-                                    resultTextView.setText("Plate: " + results.getResults().get(0).getPlate() + " Confidence: " + results.getResults().get(0).getConfidence().toString() + " Processing time: " + results.getResults().get(0).getProcessing_time_ms().toString());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (results == null || results.getResults().size() == 0) {
+                                    Toast.makeText(MainActivity.this, "It was not possible to detect the licence plate.", Toast.LENGTH_LONG).show();
+                                    resultTextView.setText("It was not possible to detect the licence plate.");
+                                    return;
                                 }
-                            });
 
-                        } catch (JsonSyntaxException exception) {
-                            final ResultsError resultsError = new Gson().fromJson(result, ResultsError.class);
+                                resultTextView.setText("Plate: " + results.getResults().get(0).getPlate()
+                                        // Trim confidence to two decimal places
+                                        + " Confidence: " + String.format("%.2f", results.getResults().get(0).getConfidence()) + "%"
+                                        // Convert processing time to seconds and trim to two decimal places
+                                        + " Processing time: " + String.format("%.2f", ((results.getResults().get(0).getProcessing_time_ms() / 1000) % 60)) + " seconds");
+                            }
+                        });
 
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    resultTextView.setText(resultsError.getMsg());
-                                }
-                            });
-                        }
+                    } catch (JsonSyntaxException exception) {
+                        final ResultsError resultsError = new Gson().fromJson(result, ResultsError.class);
 
-                        progress.dismiss();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                resultTextView.setText(resultsError.getMsg());
+                            }
+                        });
                     }
-                });
 
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
+                    progress.dismiss();
+                }
+            });
         }
     }
 
     private void checkPermission() {
-        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED){
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                Toast.makeText(this, "We require access to storage to manage the picture.", Toast.LENGTH_LONG).show();
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        STORAGE);
-                // WRITE_EXTERNAL_STORAGE is an app-defined int constant. The callback method gets the result of the request.
-            }
+        List<String> permissions = new ArrayList<>();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!permissions.isEmpty()) {
+            Toast.makeText(this, "Storage access needed to manage the picture.", Toast.LENGTH_LONG).show();
+            String[] params = permissions.toArray(new String[permissions.size()]);
+            ActivityCompat.requestPermissions(this, params, STORAGE);
+        } else { // We already have permissions, so handle as normal
+            takePicture();
         }
     }
 
@@ -156,18 +142,22 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case STORAGE:{
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Map<String, Integer> perms = new HashMap<>();
+                // Initial
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                // Fill with results
+                for (int i = 0; i < permissions.length; i++)
+                    perms.put(permissions[i], grantResults[i]);
+                // Check for WRITE_EXTERNAL_STORAGE
+                Boolean storage = perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+                if (storage) {
                     // permission was granted, yay!
+                    takePicture();
                 } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(this,"Storage permision is needed to analye the picture.", Toast.LENGTH_LONG).show();
+                    // Permission Denied
+                    Toast.makeText(this, "Storage permission is needed to analyse the picture.", Toast.LENGTH_LONG).show();
                 }
             }
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
@@ -177,5 +167,10 @@ public class MainActivity extends AppCompatActivity {
         return df.format(date);
     }
 
+    public void takePicture() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(destination));
+        startActivityForResult(intent, REQUEST_IMAGE);
+    }
 
 }
