@@ -174,6 +174,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Picasso.with(MainActivity.this).load(destination).fit().centerCrop().into(imageView);
+        if (destination != null) {// Picasso does not seem to have an issue with a null value, but to be safe
+            Picasso.with(MainActivity.this).load(destination).fit().centerCrop().into(imageView);
+        }
     }
 }
