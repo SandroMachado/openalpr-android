@@ -163,8 +163,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void takePicture() {
+        // Use a folder to store all results
+        File folder = new File(Environment.getExternalStorageDirectory() + "/OpenALPR/");
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+
+        // Generate the path for the next photo
         String name = dateToString(new Date(), "yyyy-MM-dd-hh-mm-ss");
-        destination = new File(Environment.getExternalStorageDirectory(), name + ".jpg");
+        destination = new File(folder, name + ".jpg");
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(destination));
