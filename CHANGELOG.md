@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.1](https://github.com/SandroMachado/openalpr-android/tree/1.1.1) (2016-01-14)
+[Full Changelog](https://github.com/SandroMachado/openalpr-android/compare/1.1.0...1.1.1)
+
+**Merged pull requests:**
+
+- Update JitPack badge [\#11](https://github.com/SandroMachado/openalpr-android/pull/11) ([SandroMachado](https://github.com/SandroMachado))
+- Add portuguese licence plate key points [\#10](https://github.com/SandroMachado/openalpr-android/pull/10) ([SandroMachado](https://github.com/SandroMachado))
+- \#4 Added new keypoint folder for Europe with Polish LP placeholders [\#9](https://github.com/SandroMachado/openalpr-android/pull/9) ([JerzyPuchalski](https://github.com/JerzyPuchalski))
+- Created a folder on /sdcard/ for all images captured [\#8](https://github.com/SandroMachado/openalpr-android/pull/8) ([ZKjellberg](https://github.com/ZKjellberg))
+
 ## [1.1.0](https://github.com/SandroMachado/openalpr-android/tree/1.1.0) (2016-01-06)
 [Full Changelog](https://github.com/SandroMachado/openalpr-android/compare/1.0.1...1.1.0)
 
