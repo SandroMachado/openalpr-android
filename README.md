@@ -31,7 +31,7 @@ dependencies {
 
 ## Code
 
-Copy the [OpenALPR configuration file](./openalpr.conf) to your android project assets directory `/main/assets/runtime_data/openalpr.conf` and update the `runtime_dir` to your project directory (for instance, for the sample project the directory is: `runtime_dir = /data/data/com.sandro.openalprsample/runtime_data`). After that just follow the code example bellow. To see a full example check the [sample application](./Sample/OpenALPRSample/app/src/main/java/com/sandro/openalprsample/MainActivity.java).
+Copy the [OpenALPR configuration file](./openalpr.conf) to your android project assets directory `/main/assets/runtime_data/openalpr.conf`, open it and update the `runtime_dir` to your project directory (for instance, for the sample project the directory is: `runtime_dir = /data/data/com.sandro.openalprsample/runtime_data`). After that just follow the code example bellow. To see a full example check the [sample application](./Sample/OpenALPRSample/app/src/main/java/com/sandro/openalprsample/MainActivity.java).
 
 ```Java
 
