@@ -23,7 +23,7 @@ Them include the openalpr-android dependency:
 dependencies {
 
     // ... other dependencies here.    	
-    compile 'com.github.SandroMachado:openalpr-android:1.1.0'
+    compile 'com.github.SandroMachado:openalpr-android:1.1.1'
 }
 ```
 
