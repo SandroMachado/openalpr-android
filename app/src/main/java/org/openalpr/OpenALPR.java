@@ -64,6 +64,8 @@ public interface OpenALPR {
      */
     class Factory {
 
+        private Factory() {}
+
         static OpenALPR instance;
 
         /**

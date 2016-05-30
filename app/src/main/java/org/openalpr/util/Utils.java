@@ -13,6 +13,8 @@ import java.io.OutputStream;
  */
 public class Utils {
 
+    private Utils() {}
+
     /**
      * Copies the assets folder.
      *
