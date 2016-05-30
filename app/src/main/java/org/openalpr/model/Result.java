@@ -57,7 +57,7 @@ public class Result {
      *
      * @return The matches template.
      */
-    public Double getMatches_template() {
+    public Double getMatchesTemplate() {
         return matches_template;
     }
 
@@ -75,7 +75,7 @@ public class Result {
      *
      * @return the region confidence.
      */
-    public Double getRegion_confidence() {
+    public Double getRegionConfidence() {
         return region_confidence;
     }
 
@@ -84,7 +84,7 @@ public class Result {
      *
      * @return The processing time.
      */
-    public Double getProcessing_time_ms() {
+    public Double getProcessingTimeMs() {
         return processing_time_ms;
     }
 

@@ -40,7 +40,7 @@ public class Candidate {
      *
      * @return the matches template.
      */
-    public Integer getMatches_template() {
+    public Integer getMatchesTemplate() {
         return matches_template;
     }
 
