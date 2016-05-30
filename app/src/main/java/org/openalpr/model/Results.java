@@ -4,24 +4,24 @@ import java.util.List;
 
 public class Results {
 
-    private final Double epoch_time;
+    private final Double epochTime;
 
-    private final Double processing_time_ms;
+    private final Double processingTimeMs;
 
     private final List<Result> results;
 
-    public Results(Double epoch_time, Double processing_time_ms, List<Result> results) {
-        this.epoch_time = epoch_time;
-        this.processing_time_ms = processing_time_ms;
+    public Results(Double epochTime, Double processingTimeMs, List<Result> results) {
+        this.epochTime = epochTime;
+        this.processingTimeMs = processingTimeMs;
         this.results = results;
     }
 
     public Double getEpochTime() {
-        return epoch_time;
+        return epochTime;
     }
 
     public Double getProcessingTimeMs() {
-        return processing_time_ms;
+        return processingTimeMs;
     }
 
     public List<Result> getResults() {

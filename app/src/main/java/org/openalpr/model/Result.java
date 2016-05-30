@@ -11,25 +11,25 @@ public class Result {
 
     private final Double confidence;
 
-    private final Double matches_template;
+    private final Double matchesTemplate;
 
     private final String region;
 
-    private final Double region_confidence;
+    private final Double regionConfidence;
 
-    private final Double processing_time_ms;
+    private final Double processingTimeMs;
 
     private final List<Coordinate> coordinates;
 
     private final List<Candidate> candidates;
 
-    public Result(String plate, Double confidence, Double matches_template, String region, Double region_confidence, Double processing_time_ms, List<Coordinate> coordinates, List<Candidate> candidates) {
+    public Result(String plate, Double confidence, Double matchesTemplate, String region, Double regionConfidence, Double processingTimeMs, List<Coordinate> coordinates, List<Candidate> candidates) {
         this.plate = plate;
         this.confidence = confidence;
-        this.matches_template = matches_template;
+        this.matchesTemplate = matchesTemplate;
         this.region = region;
-        this.region_confidence = region_confidence;
-        this.processing_time_ms = processing_time_ms;
+        this.regionConfidence = regionConfidence;
+        this.processingTimeMs = processingTimeMs;
         this.coordinates = coordinates;
         this.candidates = candidates;
     }
@@ -58,7 +58,7 @@ public class Result {
      * @return The matches template.
      */
     public Double getMatchesTemplate() {
-        return matches_template;
+        return matchesTemplate;
     }
 
     /**
@@ -76,7 +76,7 @@ public class Result {
      * @return the region confidence.
      */
     public Double getRegionConfidence() {
-        return region_confidence;
+        return regionConfidence;
     }
 
     /**
@@ -85,7 +85,7 @@ public class Result {
      * @return The processing time.
      */
     public Double getProcessingTimeMs() {
-        return processing_time_ms;
+        return processingTimeMs;
     }
 
     /**
