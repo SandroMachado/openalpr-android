@@ -1,6 +1,6 @@
 package org.openalpr.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Result model.
@@ -19,11 +19,11 @@ public class Result {
 
     private final Double processing_time_ms;
 
-    private final ArrayList<Coordinate> coordinates;
+    private final List<Coordinate> coordinates;
 
-    private final ArrayList<Candidate> candidates;
+    private final List<Candidate> candidates;
 
-    public Result(String plate, Double confidence, Double matches_template, String region, Double region_confidence, Double processing_time_ms, ArrayList<Coordinate> coordinates, ArrayList<Candidate> candidates) {
+    public Result(String plate, Double confidence, Double matches_template, String region, Double region_confidence, Double processing_time_ms, List<Coordinate> coordinates, List<Candidate> candidates) {
         this.plate = plate;
         this.confidence = confidence;
         this.matches_template = matches_template;
@@ -93,7 +93,7 @@ public class Result {
      *
      * @return The coordinates.
      */
-    public ArrayList<Coordinate> getCoordinates() {
+    public List<Coordinate> getCoordinates() {
         return coordinates;
     }
 
@@ -102,7 +102,7 @@ public class Result {
      *
      * @return The candidates.
      */
-    public ArrayList<Candidate> getCandidates() {
+    public List<Candidate> getCandidates() {
         return candidates;
     }
 
