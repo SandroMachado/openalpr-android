@@ -40,7 +40,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE = 100;
-    final int STORAGE=1;
+    private static final int STORAGE=1;
     private String ANDROID_DATA_DIR;
     private static File destination;
     private TextView resultTextView;
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case STORAGE:{
                 Map<String, Integer> perms = new HashMap<>();
@@ -153,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, "Storage permission is needed to analyse the picture.", Toast.LENGTH_LONG).show();
                 }
             }
+            default:
+                break;
         }
     }
 
