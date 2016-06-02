@@ -16,11 +16,11 @@ public class Results {
         this.results = results;
     }
 
-    public Double getEpoch_time() {
+    public Double getEpochTime() {
         return epoch_time;
     }
 
-    public Double getProcessing_time_ms() {
+    public Double getProcessingTimeMs() {
         return processing_time_ms;
     }
 
