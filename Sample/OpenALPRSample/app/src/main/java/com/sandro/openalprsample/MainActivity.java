@@ -80,7 +80,13 @@ public class MainActivity extends AppCompatActivity {
             AsyncTask.execute(new Runnable() {
                 @Override
                 public void run() {
-                    String result = OpenALPR.Factory.create(MainActivity.this, ANDROID_DATA_DIR).recognizeWithCountryRegionNConfig("us", "", destination.getAbsolutePath(), openAlprConfFile, 10);
+                    OpenALPR instance = OpenALPR.create(MainActivity.this, ANDROID_DATA_DIR, openAlprConfFile, "eu", "pt", 10);
+
+                    Log.d("ALPR VERSION", instance.getVersion());
+
+                    String result = instance.recognize(destination.getAbsolutePath());
+
+                    instance.dispose();
 
                     Log.d("OPEN ALPR", result);
 
