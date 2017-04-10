@@ -9,12 +9,12 @@ public class Candidate {
 
     private final Double confidence;
 
-    private final Integer matches_template;
+    private final Integer matchesTemplate;
 
-    public Candidate(String plate, Double confidence, Integer matches_template) {
+    public Candidate(String plate, Double confidence, Integer matchesTemplate) {
         this.plate = plate;
         this.confidence = confidence;
-        this.matches_template = matches_template;
+        this.matchesTemplate = matchesTemplate;
     }
 
     /**
@@ -41,7 +41,7 @@ public class Candidate {
      * @return the matches template.
      */
     public Integer getMatchesTemplate() {
-        return matches_template;
+        return matchesTemplate;
     }
 
 }
