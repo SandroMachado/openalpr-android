@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE = 100;
     private static final int STORAGE=1;
+    private static final String LOGID = "MainActivity";
     private String ANDROID_DATA_DIR;
     private static File destination;
     private TextView resultTextView;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             AsyncTask.execute(new Runnable() {
                 @Override
                 public void run() {
-                    String result = OpenALPR.Factory.create(MainActivity.this, ANDROID_DATA_DIR).recognizeWithCountryRegionNConfig("us", "", destination.getAbsolutePath(), openAlprConfFile, 10);
+                    String result = OpenALPR.Factory.create(MainActivity.this, ANDROID_DATA_DIR).recognizeWithCountryRegionNConfig("us"/*"ca"*/, "", destination.getAbsolutePath(), openAlprConfFile, 10);
 
                     Log.d("OPEN ALPR", result);
 
@@ -165,19 +167,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void takePicture() {
-        // Use a folder to store all results
-        File folder = new File(Environment.getExternalStorageDirectory() + "/OpenALPR/");
-        if (!folder.exists()) {
-            folder.mkdir();
-        }
-
-        // Generate the path for the next photo
-        String name = dateToString(new Date(), "yyyy-MM-dd-hh-mm-ss");
-        destination = new File(folder, name + ".jpg");
-
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(destination));
-        startActivityForResult(intent, REQUEST_IMAGE);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            // Use a folder to store all results
+            File folder = new File(Environment.getExternalStorageDirectory() + "/OpenALPR/");
+            if (!folder.exists()) {
+                folder.mkdir();
+            }
+
+            // Generate the path for the next photo
+            String name = dateToString(new Date(), "yyyy-MM-dd-hh-mm-ss");
+            destination = new File(folder, name + ".jpg");
+
+            if(destination != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.sandro.fileprovider",
+                        destination);
+
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(intent, REQUEST_IMAGE);
+            } else {
+                Log.e(LOGID, "Failed creating " + name);
+            }
+        } else {
+            Log.e(LOGID, "No camera!");
+        }
     }
 
     @Override
