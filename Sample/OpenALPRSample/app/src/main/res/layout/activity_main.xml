@@ -14,16 +14,7 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:freezesText="true"
-        android:textSize="15sp"
-        android:gravity="center_horizontal"/>
+        android:layout_height="200dp"/>
 
     <EditText
         android:id="@+id/txtCandidatesNum"
@@ -31,7 +22,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Candidates Num. "
-        android:inputType="text" />
+        android:inputType="numberDecimal" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -127,7 +118,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_column="3"
-                        android:text="Reg. %"
+                        android:text="Match"
                         android:textStyle="bold" />
 
                     <TextView
